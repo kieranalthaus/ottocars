@@ -1,0 +1,37 @@
+name: Update eBay Listings
+
+on:
+  schedule:
+    # Runs daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:  # allow manual trigger
+
+jobs:
+  fetch-listings:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch eBay listings
+        env:
+          EBAY_APP_ID: ${{ secrets.EBAY_APP_ID }}
+          EBAY_SELLER_ID: ${{ secrets.EBAY_SELLER_ID }}
+        run: python scripts/fetch_listings.py
+
+      - name: Commit listings.json if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add listings.json
+          git diff --cached --quiet || git commit -m "chore: update eBay listings [skip ci]"
+          git push
