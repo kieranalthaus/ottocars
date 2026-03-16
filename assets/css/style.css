@@ -44,16 +44,17 @@ header {
   border-bottom: 3px solid var(--color-blue);
 }
 
-.header-images {
-  display: flex;
-  gap: 1rem;
+.header-banner {
   margin-bottom: 1.25rem;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
-.header-images img {
-  width: 50%;
-  max-height: 260px;
+.header-banner img {
+  width: 100%;
+  max-height: 320px;
   object-fit: cover;
+  object-position: center 40%;
   display: block;
 }
 
@@ -127,6 +128,34 @@ a:hover { text-decoration: underline; }
   font-size: 0.9rem;
 }
 
+.listings-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  margin-top: 0.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.listings-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.listings-scroll::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-radius: 3px;
+}
+
+.listings-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.listings-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
 .listings-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -140,16 +169,28 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-direction: column;
   transition: box-shadow 0.15s;
+  min-width: 200px;
+  max-width: 220px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
 }
 
 .listing-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
-.listing-card img {
+.listing-card img,
+.listing-placeholder {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--color-border);
+}
+
+.listing-placeholder {
+  color: rgba(255,255,255,0.3);
+  font-size: 2.5rem;
 }
 
 .listing-info {
@@ -260,13 +301,13 @@ footer {
 @media (max-width: 560px) {
   header h1 { font-size: 1.5rem; }
 
-  .header-images {
-    flex-direction: column;
+  .header-banner img {
+    max-height: 200px;
   }
 
-  .header-images img {
-    width: 100%;
-    max-height: 200px;
+  .listing-card {
+    min-width: 170px;
+    max-width: 190px;
   }
 
   .listings-grid {
