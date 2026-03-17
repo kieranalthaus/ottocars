@@ -9,16 +9,16 @@ const PROXY_URL    = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURICo
 
 // ── Demo Listings Data (from live eBay store) ───────────────────
 const DEMO_LISTINGS = [
-  { title: '2 SET ORIGINAL MERCEDES W113 DOOR PANEL, HARD POCKET, black/Tan 230 250 SL', price: '$1,100.00', image: 'https://i.ebayimg.com/images/g/Cu8AAeSwl7NpA8mQ/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'Mercedes C107 W108 W109 W111 W116 R107 350 450 0280100012 Pressure Sensor', price: '$590.00', image: 'https://i.ebayimg.com/images/g/mtwAAeSwJEJpov8H/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: '356 Porsche Steering Wheel 356A Original 420mm 42cm Coupe Cabriolet', price: '$890.00', image: 'https://i.ebayimg.com/images/g/kfwAAeSwWK1psJFB/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'Mercedes-Benz R107 450 SL 1971-1977 NARDI Wood Steering Wheel 360mm', price: '$590.00', image: 'https://i.ebayimg.com/images/g/ZQoAAeSwwLBpPI7P/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'MERCEDES BENZ ANZA 560SL R107 Exhaust Manifold / Muffler Rear', price: '$490.00', image: 'https://i.ebayimg.com/images/g/Ix8AAeSwTUtobSH~/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'Mercedes Benz W113 Alternator AL64X', price: '$390.00', image: 'https://i.ebayimg.com/images/g/iR0AAeSw6~tpsJWu/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'Porsche 911 SC 1982-1983 ECU Bosch Jetronic 0280800055', price: '$280.00', image: 'https://i.ebayimg.com/images/g/pZYAAeSwppFpbkaU/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'Mercedes Benz Interior Door Handle Pull #1367660009 Fits Many 300 Models', price: '$190.00', image: 'https://i.ebayimg.com/images/g/ERMAAeSwyQlpYm1r/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: '0280170015 NEW Cold Start Valve Fits Porsche 914 VW Type 3', price: '$250.00', image: 'https://i.ebayimg.com/images/g/Vg0AAeSw7NhpLyK8/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
-  { title: 'Porsche 911 Euro Used Taillight Lens', price: '$190.00', image: 'https://i.ebayimg.com/images/g/qnUAAeSwAI9pL1Nd/s-l500.jpg', link: 'https://www.ebay.com/str/dino23' },
+  { title: '2 SET ORIGINAL MERCEDES W113 DOOR PANEL, HARD POCKET, black/Tan 230 250 SL', price: '$1,100.00', image: 'https://i.ebayimg.com/images/g/Cu8AAeSwl7NpA8mQ/s-l500.jpg', link: 'https://www.ebay.com/itm/286907691875' },
+  { title: 'Mercedes C107 W108 W109 W111 W116 R107 350 450 0280100012 Pressure Sensor', price: '$590.00', image: 'https://i.ebayimg.com/images/g/mtwAAeSwJEJpov8H/s-l500.jpg', link: 'https://www.ebay.com/itm/287170304045' },
+  { title: '356 Porsche Steering Wheel 356A Original 420mm 42cm Coupe Cabriolet', price: '$890.00', image: 'https://i.ebayimg.com/images/g/kfwAAeSwWK1psJFB/s-l500.jpg', link: 'https://www.ebay.com/itm/327038391984' },
+  { title: 'Mercedes-Benz R107 450 SL 1971-1977 NARDI Wood Steering Wheel 360mm', price: '$590.00', image: 'https://i.ebayimg.com/images/g/ZQoAAeSwwLBpPI7P/s-l500.jpg', link: 'https://www.ebay.com/itm/287007125536' },
+  { title: 'MERCEDES BENZ ANZA 560SL R107 Exhaust Manifold / Muffler Rear', price: '$490.00', image: 'https://i.ebayimg.com/images/g/Ix8AAeSwTUtobSH~/s-l500.jpg', link: 'https://www.ebay.com/itm/286695739982' },
+  { title: 'Mercedes Benz W113 Alternator AL64X', price: '$390.00', image: 'https://i.ebayimg.com/images/g/iR0AAeSw6~tpsJWu/s-l500.jpg', link: 'https://www.ebay.com/itm/327038400908' },
+  { title: 'Porsche 911 SC 1982-1983 ECU Bosch Jetronic 0280800055', price: '$280.00', image: 'https://i.ebayimg.com/images/g/pZYAAeSwppFpbkaU/s-l500.jpg', link: 'https://www.ebay.com/itm/287086347799' },
+  { title: 'Mercedes Benz Interior Door Handle Pull #1367660009 Fits Many 300 Models', price: '$190.00', image: 'https://i.ebayimg.com/images/g/ERMAAeSwyQlpYm1r/s-l500.jpg', link: 'https://www.ebay.com/itm/326949956423' },
+  { title: '0280170015 NEW Cold Start Valve Fits Porsche 914 VW Type 3', price: '$250.00', image: 'https://i.ebayimg.com/images/g/Vg0AAeSw7NhpLyK8/s-l500.jpg', link: 'https://www.ebay.com/itm/286984958766' },
+  { title: 'Porsche 911 Euro Used Taillight Lens', price: '$190.00', image: 'https://i.ebayimg.com/images/g/qnUAAeSwAI9pL1Nd/s-l500.jpg', link: 'https://www.ebay.com/itm/326895895832' },
 ];
 
 // ── eBay Listings ───────────────────────────────────────────────
