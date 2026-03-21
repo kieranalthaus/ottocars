@@ -312,8 +312,8 @@ footer {
 }
 
 /* Offset everything else to make room for the fixed panel */
-header, .page-layout, footer {
-  margin-left: 200px;
+body {
+  padding-left: 200px;
 }
 
 .car-card {
@@ -372,8 +372,8 @@ header, .page-layout, footer {
     scroll-snap-align: start;
   }
 
-  header, main, footer {
-    margin-left: 0;
+  body {
+    padding-left: 0;
   }
 }
 
