@@ -1,0 +1,52 @@
+name: Update Inventory from Google Form
+
+on:
+  schedule:
+    # Runs nightly at 10:00 UTC (3 AM Pacific in summer, 2 AM in winter)
+    - cron: '0 10 * * *'
+  workflow_dispatch:  # "Run workflow" button for testing or an immediate update
+
+permissions:
+  contents: write  # needed to push the updated inventory
+
+concurrency:
+  group: inventory-sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Sync inventory from Google Sheet
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          ALLOWED_EMAILS: ${{ secrets.ALLOWED_EMAILS }}
+        run: python scripts/sync_inventory.py
+
+      # No "[skip ci]" in the message: it would also skip the GitHub Pages rebuild.
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data/inventory.json assets/images/items
+          if git diff --cached --quiet; then
+            echo "No changes to the inventory."
+            exit 0
+          fi
+          git commit -m "Update inventory from Google Form"
+          git pull --rebase
+          git push

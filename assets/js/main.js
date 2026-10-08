@@ -61,6 +61,124 @@ function loadEbayListings() {
   container.appendChild(viewAll);
 }
 
+// ── Inventory (items Otto adds through the Google Form) ────────
+// data/inventory.json is regenerated nightly by
+// .github/workflows/update_inventory.yml — see README.md.
+const INVENTORY_URL = 'data/inventory.json';
+
+async function fetchInventory() {
+  const response = await fetch(INVENTORY_URL, { cache: 'no-cache' });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+function inventoryCard(item, className) {
+  const card  = document.createElement('article');
+  const photo = item.photos[0];
+  card.className = className;
+  card.innerHTML = `
+    ${photo
+      ? `<img src="${escapeHtml(photo.thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" />`
+      : '<div class="listing-placeholder"></div>'}
+    <div class="listing-info">
+      <span class="listing-title">${escapeHtml(item.title)}</span>
+      <span class="listing-price">${escapeHtml(item.price)}</span>
+    </div>
+    <a class="listing-link" href="item.html?id=${encodeURIComponent(item.id)}">View Details</a>
+  `;
+  return card;
+}
+
+// Home page: cars go to the side panel (above the hand-written ones),
+// parts go to the "Parts for Sale" section, which stays hidden if empty.
+async function loadInventory() {
+  let items;
+  try {
+    items = await fetchInventory();
+  } catch (err) {
+    console.warn('Could not load inventory:', err);
+    return;  // the static cars and eBay listings still show
+  }
+
+  const cars  = items.filter(item => item.category === 'car');
+  const parts = items.filter(item => item.category !== 'car');
+
+  const panelHeading = document.querySelector('.cars-panel h2');
+  if (panelHeading) panelHeading.after(...cars.map(item => inventoryCard(item, 'car-card')));
+
+  if (parts.length) {
+    document.getElementById('parts-listings')
+      .append(...parts.map(item => inventoryCard(item, 'listing-card')));
+    document.getElementById('parts-section').hidden = false;
+  }
+}
+
+// Detail page (item.html?id=...)
+async function loadItemPage() {
+  const container = document.getElementById('item-detail');
+  const id = new URLSearchParams(window.location.search).get('id');
+
+  let item;
+  try {
+    item = (await fetchInventory()).find(entry => entry.id === id);
+  } catch (err) {
+    container.innerHTML = `
+      <p class="listings-error">
+        Sorry, this item couldn't be loaded.
+        <a href="${escapeHtml(EBAY_PROFILE_URL)}" target="_blank" rel="noopener">Browse all listings on eBay &rarr;</a>
+      </p>`;
+    return;
+  }
+
+  if (!item) {
+    container.innerHTML = `
+      <p class="listings-error">
+        This item is no longer listed &mdash; it may have sold.
+        <a href="index.html">See what's for sale &rarr;</a>
+      </p>`;
+    return;
+  }
+
+  document.title = `${item.title} — Otto's Classic Cars & Parts`;
+  const [first] = item.photos;
+
+  container.innerHTML = `
+    ${first ? `
+      <a class="item-photo" href="${escapeHtml(first.full)}" target="_blank" rel="noopener">
+        <img src="${escapeHtml(first.full)}" alt="${escapeHtml(item.title)}" />
+      </a>` : ''}
+    ${item.photos.length > 1 ? `
+      <div class="item-thumbs">
+        ${item.photos.map((photo, i) => `
+          <button type="button" class="item-thumb${i === 0 ? ' active' : ''}" data-full="${escapeHtml(photo.full)}">
+            <img src="${escapeHtml(photo.thumb)}" alt="Photo ${i + 1}" loading="lazy" />
+          </button>`).join('')}
+      </div>` : ''}
+    <div class="item-header">
+      <h1>${escapeHtml(item.title)}</h1>
+      <span class="item-price">${escapeHtml(item.price)}</span>
+    </div>
+    ${item.description ? '<p class="item-description"></p>' : ''}
+    ${item.ebay ? `
+      <a class="item-button" href="${escapeHtml(item.ebay)}" target="_blank" rel="noopener">View on eBay</a>` : ''}
+  `;
+
+  // textContent keeps Otto's line breaks (via CSS pre-line) without any HTML risk
+  const description = container.querySelector('.item-description');
+  if (description) description.textContent = item.description;
+
+  // Clicking a thumbnail swaps the main photo
+  const mainLink  = container.querySelector('.item-photo');
+  const mainImage = mainLink && mainLink.querySelector('img');
+  container.querySelectorAll('.item-thumb').forEach(button => {
+    button.addEventListener('click', () => {
+      mainImage.src = mainLink.href = button.dataset.full;
+      container.querySelector('.item-thumb.active').classList.remove('active');
+      button.classList.add('active');
+    });
+  });
+}
+
 // ── Email deobfuscation ─────────────────────────────────────────
 function revealEmail() {
   const link = document.querySelector('.email-link');
@@ -86,4 +204,9 @@ function escapeHtml(str) {
 // ── Init ────────────────────────────────────────────────────────
 document.getElementById('year').textContent = new Date().getFullYear();
 revealEmail();
-loadEbayListings();
+if (document.getElementById('item-detail')) {
+  loadItemPage();
+} else {
+  loadEbayListings();
+  loadInventory();
+}

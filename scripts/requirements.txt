@@ -1,0 +1,4 @@
+google-auth>=2.20
+requests>=2.31
+Pillow>=10.0
+pillow-heif>=0.16

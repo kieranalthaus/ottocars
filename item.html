@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Item for sale from Otto's Classic Cars & Parts — classic Mercedes, BMW, and European parts." />
+  <title>Otto's Classic Cars & Parts</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="detail-page">
+
+  <header>
+    <div class="header-text">
+      <h1>Otto's Classic Cars & Parts</h1>
+      <p class="tagline">Specializing in classic Mercedes-Benz &amp; European vehicles</p>
+    </div>
+  </header>
+
+  <main>
+    <a href="index.html" class="back-link">&larr; Back to all items</a>
+
+    <!-- Filled by main.js from data/inventory.json using the ?id= in the URL -->
+    <div id="item-detail">
+      <p class="loading">Loading…</p>
+    </div>
+
+    <section id="contact">
+      <h2>Interested? Get in touch</h2>
+      <address>
+        <p>
+          Phone: <a href="tel:310-920-4155">310-920-4155</a>
+        </p>
+        <p>
+          Email:
+          <!-- Obfuscated to reduce spam harvesting -->
+          <a href="#" class="email-link" data-user="ottocars" data-domain="aol.com">
+            [enable JavaScript to view email]
+          </a>
+        </p>
+      </address>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> Otto's Classic Cars & Parts. All rights reserved.</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
