@@ -112,9 +112,11 @@ Then delete the test row from the sheet and run it again to clear it.
 - **Add something:** tap the form icon, fill it in, add photos, tap *Submit*. It's on the
   site the next morning.
 - **Something sold:** in the response sheet (Google Sheets app), tick the **Sold** checkbox
-  on that row, or delete the row. *One-time prep:* type `Sold` as the header of the first
-  empty column to the right of the form's columns, select the cells below it, then
-  *Insert → Checkbox*.
+  on that row (typing `yes` works too). Untick it to bring the item back. *One-time prep,
+  on a computer:* type `Sold` as the header of the first empty column to the right of the
+  form's columns, then *Data → Data validation → Add rule*: apply to that column from row 2
+  down (e.g. `I2:I`), criteria **Checkbox**, tick *Use custom cell values*, Checked = `yes`,
+  Unchecked = leave blank. Any other Unchecked text would count as sold.
 - **Fix a typo:** edit the cell in the sheet.
 
 ### Good to know
