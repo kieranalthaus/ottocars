@@ -67,6 +67,7 @@ COLUMN_KEYWORDS = {
 REQUIRED_COLUMNS = ["timestamp", "title", "price", "description", "photos"]
 
 DRIVE_ID_RE = re.compile(r"(?:[?&]id=|/d/)([\w-]{20,})")
+SHEET_URL_RE = re.compile(r"/spreadsheets/d/([\w-]+)")
 EBAY_URL_RE = re.compile(r"(?:https?://)?(?:[\w-]+\.)*ebay\.[a-z.]{2,6}/\S*", re.IGNORECASE)
 PRICE_RE    = re.compile(r"\$?\s*(\d[\d,]*)(\.\d{1,2})?")
 NOT_SOLD    = {"", "false", "no", "n"}
@@ -85,12 +86,21 @@ def get_session() -> AuthorizedSession:
 
 def fetch_rows(session: AuthorizedSession) -> list[list[str]]:
     sheet_id = os.environ["GOOGLE_SHEET_ID"].strip()
+    # Tolerate the whole sheet URL being pasted into the secret.
+    if match := SHEET_URL_RE.search(sheet_id):
+        sheet_id = match.group(1)
     sheet_range = os.environ.get("SHEET_RANGE") or "A:Z"
     response = session.get(
         f"https://sheets.googleapis.com/v4/spreadsheets/{sheet_id}/values/{quote(sheet_range)}",
         timeout=30,
     )
-    response.raise_for_status()
+    if not response.ok:
+        sys.exit(
+            f"Couldn't read the sheet ({response.status_code}): {response.text[:500]}\n"
+            "Check that GOOGLE_SHEET_ID comes from the spreadsheet's URL "
+            "(docs.google.com/spreadsheets/d/<ID>/edit, not the form's URL) and that "
+            "the spreadsheet is shared with the service account's email."
+        )
     return response.json().get("values", [])
 
 

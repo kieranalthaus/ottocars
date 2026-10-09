@@ -89,7 +89,7 @@ photos without anyone's password.
 | Secret | Value |
 |---|---|
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | the entire contents of the downloaded JSON key file |
-| `GOOGLE_SHEET_ID` | from the sheet's URL: `docs.google.com/spreadsheets/d/`**`THIS_PART`**`/edit` |
+| `GOOGLE_SHEET_ID` | from the sheet's URL: `docs.google.com/spreadsheets/d/`**`THIS_PART`**`/edit` (open the sheet from the form's *Responses → View in Sheets*; the form's own URL has a different ID) |
 | `ALLOWED_EMAILS` | Otto's Google account email (comma-separate to add yours for testing) |
 
 `ALLOWED_EMAILS` is technically optional, but without it **anyone who finds the form link
