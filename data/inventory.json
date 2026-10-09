@@ -6,6 +6,11 @@
     "price": "$410",
     "description": "",
     "ebay": "",
-    "photos": []
+    "photos": [
+      {
+        "full": "assets/images/items/16cWZNoTjEuPF9Kwaflguh2NaM0qdCVEc.jpg",
+        "thumb": "assets/images/items/16cWZNoTjEuPF9Kwaflguh2NaM0qdCVEc-thumb.jpg"
+      }
+    ]
   }
 ]
